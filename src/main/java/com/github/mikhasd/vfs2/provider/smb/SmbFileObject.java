@@ -56,6 +56,7 @@ public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
                 if (!STATUS_OBJECT_NAME_NOT_FOUND.equals(status) && !STATUS_OBJECT_PATH_NOT_FOUND.equals(status)) {
                     throw SmbProviderException.fileInformationError(path, saex);
                 }
+                return Optional.empty();
             }
         }
         return Optional.of(this.smbFileInfo);
