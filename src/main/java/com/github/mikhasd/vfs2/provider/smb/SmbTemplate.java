@@ -82,14 +82,14 @@ public class SmbTemplate {
     Collection<FileIdBothDirectoryInformation> getChildrenInfo(String path) throws SmbProviderException {
         List<FileIdBothDirectoryInformation> infos = diskShareWrapper.list(path);
         List<FileIdBothDirectoryInformation> children = new ArrayList<>(infos.size());
-        for (FileIdBothDirectoryInformation child : children) {
+        for (FileIdBothDirectoryInformation child : infos) {
             String name = child.getFileName();
             if (name.equals(".") || name.equals("..") || name.equals("./") || name.equals("../")) {
                 continue;
             }
-            infos.add(child);
+            children.add(child);
         }
-        return Collections.unmodifiableCollection(infos);
+        return Collections.unmodifiableCollection(children);
     }
 
     void delete(String path) throws SmbProviderException {
