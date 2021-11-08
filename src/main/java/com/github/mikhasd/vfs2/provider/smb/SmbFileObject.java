@@ -248,7 +248,7 @@ public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
 
         static Info from(FileIdBothDirectoryInformation fdInfo) {
             long lastModifiedTime = fdInfo.getLastWriteTime().toEpochMillis();
-            boolean directory = (FileAttributes.FILE_ATTRIBUTE_DIRECTORY.getValue() * fdInfo.getFileAttributes()) != 0;
+            boolean directory = (FileAttributes.FILE_ATTRIBUTE_DIRECTORY.getValue() & fdInfo.getFileAttributes()) != 0;
             long contentSize = fdInfo.getEndOfFile();
             return new Info(lastModifiedTime, directory, contentSize);
         }
