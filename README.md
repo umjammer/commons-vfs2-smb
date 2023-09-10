@@ -1,3 +1,8 @@
+[![Release](https://jitpack.io/v/umjammer/commons-vfs2-smb.svg)](https://jitpack.io/#umjammer/commons-vfs2-smb)
+[![Java CI](https://github.com/umjammer/commons-vfs2-smb/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/commons-vfs2-smb/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/umjammer/commons-vfs2-smb/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/commons-vfs2-smb/actions/workflows/codeql-analysis.yml)
+![Java](https://img.shields.io/badge/Java-8-b07219)
+
 # commons-vfs2-smb
 
 A production tested SMB FileSystemProvider for [Apache commons-vfs2](https://commons.apache.org/proper/commons-vfs/) based on [smbj](https://github.com/hierynomus/smbj).
