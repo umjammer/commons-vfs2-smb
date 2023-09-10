@@ -81,7 +81,9 @@ public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
     @Override
     protected OutputStream doGetOutputStream(final boolean append) throws Exception {
         File file = smbTemplate.openFileForWrite(path);
-        return file.getOutputStream(append);
+        return new FilterOutputStream(file.getOutputStream(append)) {
+            @Override public void close() throws IOException { super.close(); file.close(); }
+        };
     }
 
     @Override
