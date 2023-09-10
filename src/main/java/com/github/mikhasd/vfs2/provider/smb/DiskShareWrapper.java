@@ -106,4 +106,8 @@ class DiskShareWrapper {
     protected boolean folderExists(String path) throws SmbProviderException {
         return applyWithDiskShare(DiskShare::folderExists, path);
     }
+
+    public DiskShare getDiskShare() throws SmbProviderException {
+        return diskShareManager.getDiskShare();
+    }
 }

@@ -10,7 +10,9 @@ import com.hierynomus.smbj.share.File;
 import org.apache.commons.vfs2.*;
 import org.apache.commons.vfs2.provider.AbstractFileObject;
 import org.apache.commons.vfs2.provider.UriParser;
+import org.apache.commons.vfs2.util.FileObjectUtils;
 
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -125,11 +127,11 @@ public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
         if (isFolder()) {
             entry = smbTemplate.openFolderForWrite(path);
         } else {
-            entry = smbTemplate.openFileForWrite(path);
+            entry = smbTemplate.openFileForRename(path);
         }
         try {
             SmbFileObject fo = (SmbFileObject) newFile;
-            entry.rename(fo.path);
+            entry.rename(smbTemplate.getNameToRename(fo.path));
         } finally {
             entry.close();
         }
@@ -140,8 +142,8 @@ public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
         smbTemplate.delete(path);
     }
 
-    @Override
-    public void copyFrom(FileObject file, FileSelector selector) throws FileSystemException {
+    // TODO currently let users use super class method.
+    public void copyFrom_(FileObject file, FileSelector selector) throws FileSystemException {
         if (!file.exists()) {
             throw SmbProviderException.missingSourceFile(file);
         }
@@ -163,7 +165,7 @@ public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
                     if (srcFile.getFileSystem().equals(destinationFile.getFileSystem())) {
                         performServerSideCopy(srcFile, destinationFile);
                     } else {
-                        FileUtil.copyContent(srcFile, destinationFile);
+                        FileObjectUtils.writeContent(srcFile, destinationFile);
                     }
                 } else if (srcFileType.hasChildren()) {
                     destinationFile.createFolder();

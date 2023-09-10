@@ -2,6 +2,7 @@ package com.github.mikhasd.vfs2.provider.smb;
 
 import com.hierynomus.msfscc.fileinformation.FileAllInformation;
 import com.hierynomus.msfscc.fileinformation.FileIdBothDirectoryInformation;
+import com.hierynomus.smbj.common.SmbPath;
 import com.hierynomus.smbj.share.Directory;
 import com.hierynomus.smbj.share.File;
 
@@ -41,9 +42,9 @@ public class SmbTemplate {
     Directory openFolderForWrite(String path) throws SmbProviderException {
         return this.diskShareWrapper.openDirectory(
                 path,
-                of(GENERIC_ALL),
+                of(GENERIC_WRITE, GENERIC_READ, GENERIC_EXECUTE),
                 of(FILE_ATTRIBUTE_NORMAL),
-                of(FILE_SHARE_READ),
+                of(FILE_SHARE_WRITE, FILE_SHARE_READ),
                 FILE_OPEN_IF,
                 of(FILE_DIRECTORY_FILE)
         );
@@ -52,9 +53,9 @@ public class SmbTemplate {
     private File openDestFileForCopy(String path) throws SmbProviderException {
         return this.diskShareWrapper.openFile(
                 path,
-                of(GENERIC_READ),
+                of(GENERIC_WRITE, GENERIC_READ),
                 of(FILE_ATTRIBUTE_NORMAL),
-                of(FILE_SHARE_READ),
+                of(FILE_SHARE_WRITE, FILE_SHARE_READ),
                 FILE_OPEN,
                 of(FILE_NON_DIRECTORY_FILE)
         );
@@ -63,9 +64,9 @@ public class SmbTemplate {
     private File openSourceFileForCopy(String path) throws SmbProviderException {
         return this.diskShareWrapper.openFile(
                 path,
-                of(GENERIC_WRITE),
+                of(GENERIC_READ),
                 of(FILE_ATTRIBUTE_NORMAL),
-                of(FILE_SHARE_WRITE),
+                of(FILE_SHARE_WRITE, FILE_SHARE_READ),
                 FILE_OPEN_IF,
                 of(FILE_NON_DIRECTORY_FILE)
         );
@@ -110,12 +111,38 @@ public class SmbTemplate {
     File openFileForWrite(String path) throws SmbProviderException {
         return this.diskShareWrapper.openFile(
                 path,
-                of(GENERIC_WRITE),
+                of(GENERIC_WRITE, GENERIC_READ),
                 of(FILE_ATTRIBUTE_NORMAL),
-                of(FILE_SHARE_WRITE),
+                of(FILE_SHARE_WRITE, FILE_SHARE_READ),
                 FILE_OPEN_IF,
                 of(FILE_NON_DIRECTORY_FILE, FILE_NO_COMPRESSION)
         );
+    }
+
+    File openFileForRename(String path) throws SmbProviderException {
+    	return this.diskShareWrapper.openFile(
+                path,
+                of(DELETE),
+                of(FILE_ATTRIBUTE_NORMAL),
+                of(FILE_SHARE_READ),
+                FILE_OPEN,
+                of(FILE_NON_DIRECTORY_FILE)
+        );
+    }
+
+    File openDirectoryForRename(String path) throws SmbProviderException {
+        return this.diskShareWrapper.openFile(
+                path,
+                of(DELETE),
+                of(FILE_ATTRIBUTE_NORMAL),
+                of(FILE_SHARE_READ),
+                FILE_OPEN,
+                of(FILE_DIRECTORY_FILE)
+        );
+    }
+
+    String getNameToRename(String renameTo) throws SmbProviderException {
+        return new SmbPath(diskShareWrapper.getDiskShare().getSmbPath(), renameTo).getPath();
     }
 
     File openFileForRead(String path) throws SmbProviderException {
@@ -123,7 +150,7 @@ public class SmbTemplate {
                 path,
                 of(GENERIC_READ),
                 of(FILE_ATTRIBUTE_NORMAL),
-                of(FILE_SHARE_WRITE),
+                of(FILE_SHARE_WRITE, FILE_SHARE_READ),
                 FILE_OPEN,
                 of(FILE_NON_DIRECTORY_FILE, FILE_NO_COMPRESSION)
         );
