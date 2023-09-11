@@ -9,6 +9,7 @@ import com.hierynomus.smbj.session.Session;
 import java.io.IOException;
 import java.util.Objects;
 
+
 public class SessionFactory {
 
     private final static SmbConfig CONFIG = SmbConfig.builder()
@@ -27,7 +28,7 @@ public class SessionFactory {
     }
 
     private AuthenticationContext createAuthenticationContext(String domain, String username, String password) {
-        if(Objects.isNull(username) || username.trim().isEmpty())
+        if (Objects.isNull(username) || username.trim().isEmpty())
             return AuthenticationContext.anonymous();
         return new AuthenticationContext(username, password.toCharArray(), domain);
     }

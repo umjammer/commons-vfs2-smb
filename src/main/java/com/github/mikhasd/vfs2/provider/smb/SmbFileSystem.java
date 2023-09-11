@@ -6,6 +6,7 @@ import org.apache.commons.vfs2.provider.AbstractFileSystem;
 
 import java.util.Collection;
 
+
 public class SmbFileSystem extends AbstractFileSystem {
     private final SmbTemplate smbTemplate;
 
@@ -24,5 +25,4 @@ public class SmbFileSystem extends AbstractFileSystem {
     protected void addCapabilities(Collection<Capability> caps) {
         caps.addAll(SmbFileProvider.CAPABILITIES);
     }
-
 }

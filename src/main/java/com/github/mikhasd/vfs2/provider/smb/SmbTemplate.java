@@ -20,10 +20,12 @@ import static com.hierynomus.mssmb2.SMB2ShareAccess.FILE_SHARE_READ;
 import static com.hierynomus.mssmb2.SMB2ShareAccess.FILE_SHARE_WRITE;
 import static java.util.EnumSet.of;
 
+
 public class SmbTemplate {
+
     private final DiskShareWrapper diskShareWrapper;
 
-    public SmbTemplate(DiskShareWrapper diskShareWrapper) {
+    SmbTemplate(DiskShareWrapper diskShareWrapper) {
         this.diskShareWrapper = diskShareWrapper;
     }
 

@@ -23,6 +23,7 @@ import static com.hierynomus.mserref.NtStatus.STATUS_OBJECT_PATH_NOT_FOUND;
 import static org.apache.commons.vfs2.FileType.FOLDER;
 import static org.apache.commons.vfs2.FileType.IMAGINARY;
 
+
 public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
 
     private final SmbTemplate smbTemplate;
@@ -79,7 +80,8 @@ public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
     }
 
     @Override
-    protected OutputStream doGetOutputStream(final boolean append) throws Exception {
+    protected OutputStream doGetOutputStream(boolean append) throws Exception {
+        @SuppressWarnings("resource")
         File file = smbTemplate.openFileForWrite(path);
         return new FilterOutputStream(file.getOutputStream(append)) {
             @Override public void close() throws IOException { super.close(); file.close(); }
@@ -125,7 +127,7 @@ public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
 
     @Override
     protected void doRename(FileObject newFile) throws Exception {
-        final DiskEntry entry;
+        DiskEntry entry;
         if (isFolder()) {
             entry = smbTemplate.openFolderForWrite(path);
         } else {
@@ -150,12 +152,12 @@ public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
             throw SmbProviderException.missingSourceFile(file);
         }
 
-        final List<FileObject> files = new ArrayList<>();
+        List<FileObject> files = new ArrayList<>();
         file.findFiles(selector, false, files);
 
         for (FileObject srcFile : files) {
-            final String relativePath = file.getName().getRelativeName(srcFile.getName());
-            final FileObject destinationFile = resolveFile(relativePath, NameScope.DESCENDENT_OR_SELF);
+            String relativePath = file.getName().getRelativeName(srcFile.getName());
+            FileObject destinationFile = resolveFile(relativePath, NameScope.DESCENDENT_OR_SELF);
 
             FileType srcFileType = srcFile.getType();
             if (destinationFile.exists() && !destinationFile.getType().equals(srcFileType)) {
@@ -172,7 +174,7 @@ public class SmbFileObject extends AbstractFileObject<SmbFileSystem> {
                 } else if (srcFileType.hasChildren()) {
                     destinationFile.createFolder();
                 }
-            } catch (final IOException ioex) {
+            } catch (IOException ioex) {
                 throw new FileSystemException("vfs.provider/copy-file.error", ioex, srcFile, destinationFile);
             }
         }
