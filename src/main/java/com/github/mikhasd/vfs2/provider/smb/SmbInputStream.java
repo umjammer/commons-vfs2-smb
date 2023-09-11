@@ -5,7 +5,9 @@ import com.hierynomus.smbj.share.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 public class SmbInputStream extends InputStream {
+
     private final File file;
     private final InputStream inputStream;
 

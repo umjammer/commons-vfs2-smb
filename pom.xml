@@ -6,7 +6,7 @@
 
   <groupId>com.github.mikhasd</groupId>
   <artifactId>commons-vfs2-smb</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 
   <scm>
     <connection>scm:git:git://github.com/mikhasd/commons-vfs2-smb.git</connection>

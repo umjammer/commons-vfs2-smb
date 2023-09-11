@@ -11,6 +11,7 @@ import java.util.Optional;
 import static org.apache.commons.vfs2.Capability.*;
 import static org.apache.commons.vfs2.UserAuthenticationData.*;
 
+
 public class SmbFileProvider extends AbstractOriginatingFileProvider {
 
     static final Collection<Capability> CAPABILITIES = EnumSet.of(
@@ -38,20 +39,20 @@ public class SmbFileProvider extends AbstractOriginatingFileProvider {
 
     @Override
     protected FileSystem doCreateFileSystem(FileName rootName, FileSystemOptions fileSystemOptions) throws FileSystemException {
-        final SmbFileName smbRootName = (SmbFileName) rootName;
-        final DiskShareWrapper diskShareWrapper = createDiskShareConnection(smbRootName, fileSystemOptions);
-        final SmbTemplate smbTemplate = new SmbTemplate(diskShareWrapper);
+        SmbFileName smbRootName = (SmbFileName) rootName;
+        DiskShareWrapper diskShareWrapper = createDiskShareConnection(smbRootName, fileSystemOptions);
+        SmbTemplate smbTemplate = new SmbTemplate(diskShareWrapper);
         return new SmbFileSystem(rootName, fileSystemOptions, smbTemplate);
     }
 
     private DiskShareWrapper createDiskShareConnection(SmbFileName smbRootName, FileSystemOptions fileSystemOptions) {
 
-        final String hostname = smbRootName.getHostName();
-        final String share = smbRootName.getShare();
+        String hostname = smbRootName.getHostName();
+        String share = smbRootName.getShare();
 
-        final String username;
-        final String password;
-        final String domain;
+        String username;
+        String password;
+        String domain;
 
         Optional<UserAuthenticationData> authenticationData = getAuthenticationData(fileSystemOptions);
 
@@ -67,8 +68,8 @@ public class SmbFileProvider extends AbstractOriginatingFileProvider {
         }
 
 
-        final SessionFactory sessionFactory = new SessionFactory(hostname, domain, username, password);
-        final DiskShareManager diskShareManager = new DiskShareManager(sessionFactory, share);
+        SessionFactory sessionFactory = new SessionFactory(hostname, domain, username, password);
+        DiskShareManager diskShareManager = new DiskShareManager(sessionFactory, share);
         return new DiskShareWrapper(diskShareManager);
     }
 

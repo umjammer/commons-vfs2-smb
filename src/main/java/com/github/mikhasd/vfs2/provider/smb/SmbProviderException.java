@@ -1,11 +1,11 @@
 package com.github.mikhasd.vfs2.provider.smb;
 
-
 import com.hierynomus.mssmb2.SMBApiException;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 
 import java.io.IOException;
+
 
 public class SmbProviderException extends FileSystemException {
 

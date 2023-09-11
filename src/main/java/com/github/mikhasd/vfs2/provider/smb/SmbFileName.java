@@ -6,6 +6,7 @@ import org.apache.commons.vfs2.provider.GenericFileName;
 
 import java.util.Objects;
 
+
 public class SmbFileName extends GenericFileName {
 
     static final int DEFAULT_PORT = 136;

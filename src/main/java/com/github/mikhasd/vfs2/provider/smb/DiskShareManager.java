@@ -5,12 +5,12 @@ import com.hierynomus.smbj.share.DiskShare;
 
 import java.util.Objects;
 
+
 public class DiskShareManager {
 
     private final SessionFactory sessionFactory;
     private final String shareName;
     private DiskShare diskShare;
-
 
     public DiskShareManager(SessionFactory sessionFactory, String shareName) {
         this.sessionFactory = sessionFactory;
@@ -18,7 +18,7 @@ public class DiskShareManager {
     }
 
     public DiskShare getDiskShare() throws SmbProviderException {
-        if(!isConnected()){
+        if (!isConnected()) {
             Session session = this.sessionFactory.create();
             this.diskShare = (DiskShare) session.connectShare(this.shareName);
         }

@@ -19,7 +19,8 @@ import com.hierynomus.smbj.session.Session;
 import com.hierynomus.smbj.share.DiskShare;
 import com.hierynomus.smbj.share.File;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIf;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariables;
 import vavi.util.Debug;
 
 import static com.hierynomus.msdtyp.AccessMask.DELETE;
@@ -43,10 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class SmbjTest {
 
-    static boolean localPropertiesExists() {
-        return Files.exists(Paths.get("local.properties"));
-    }
-
     static {
         // TODO move to pom.xml
         System.setProperty("vavi.util.logging.VaviFormatter.extraClassMethod",
@@ -69,7 +66,13 @@ public class SmbjTest {
      * - according to cyberduck it works with smbj 0.12.2 https://github.com/hierynomus/smbj/issues/584#issuecomment-1694759650
      */
     @Test
-    @EnabledIf("localPropertiesExists")
+    @EnabledIfEnvironmentVariables({
+            @EnabledIfEnvironmentVariable(named = "TEST_SMB_ACCOUNT", matches = ".+"),
+            @EnabledIfEnvironmentVariable(named = "TEST_SMB_PASSWORD", matches = ".+"),
+            @EnabledIfEnvironmentVariable(named = "TEST_SMB_HOST", matches = ".+"),
+            @EnabledIfEnvironmentVariable(named = "TEST_SMB_DOMAIN", matches = ".+"),
+            @EnabledIfEnvironmentVariable(named = "TEST_SMB_PATH", matches = ".+"),
+    })
     void test_smbj() throws Exception {
         String username = System.getenv("TEST_SMB_ACCOUNT");
         String password = System.getenv("TEST_SMB_PASSWORD");
